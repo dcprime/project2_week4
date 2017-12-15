@@ -34,6 +34,7 @@
 #define STRSIZE 100
 #define TRUE 1
 #define FALSE 0
+#define HUFFEXTRA 384
 
 #ifdef __cplusplus
 extern "C" {

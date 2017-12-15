@@ -21,7 +21,10 @@ FILE* f;
 extern short iBigBufIn[];	// receiving buffer
 extern long lBigBufSize;	// total number of samples in buffer
 const int audio_as_char = SAMPLES_SEC * RECORD_TIME * (sizeof(short) / sizeof(char));
-char audio_out[audio_as_char];
+unsigned char audio_out[audio_as_char];
+
+const int audio_compressed_size = audio_as_char + HUFFEXTRA;
+unsigned char audio_compressed[audio_compressed_size];
 
 int save_and_send(short* iBigBuf, long lBigBufSize, bool compression) {
 	char send;
@@ -38,15 +41,21 @@ int save_and_send(short* iBigBuf, long lBigBufSize, bool compression) {
 		printf("Writing to sound file ...\n");
 		fwrite(iBigBuf, sizeof(short), lBigBufSize, f);
 		fclose(f);*/
+		
+		memcpy(audio_out, iBigBuf, audio_as_char);
 
 		if (compression) {
 			printf("\nCompressing audio message...\n");
-
+			Huffman_Compress(audio_out, audio_compressed, audio_as_char);
 		}
-
 		printf("\nSending audio recording to receiver...\n");
-		memcpy(audio_out, iBigBuf, audio_as_char);
-		outputToPort(audio_out, audio_as_char);
+		if (compression) {
+			// send compressed file
+			outputToPort(audio_compressed, audio_compressed_size);
+		}
+		else {
+			outputToPort(audio_out, audio_as_char);
+		}
 		Sleep(1000); // play with this number to see how short (or eliminate?)
 		purgePort();
 		return 1;
@@ -73,18 +82,27 @@ int play_audio_file(int totalAudio) {
 	return 1;
 }
 
-void StartListeningMode(int* unlistenedAudio, int* totalAudio) {
+void StartListeningMode(int* unlistenedAudio, int* totalAudio, bool compressed) {
 
 	int run = TRUE;
 	int success = 0;
-	char audioIn[audio_as_char];
+	unsigned char audioIn[audio_as_char];
+	unsigned char audioInCompressed[audio_compressed_size];
 	short dot_counter = 0;
 	unsigned long timeout = 0;
 
 	while (run == TRUE) {
-		success = inputFromPort(audioIn, audio_as_char);	// Receive audio from port
+		if (compressed) {
+			success = inputFromPort(audioInCompressed, audio_compressed_size);	// Receive compressed audio from port
+		}
+		else {
+			success = inputFromPort(audioIn, audio_as_char);	// Receive audio from port
+		}
 		if (success == 1) {
 			// copy audio to iBigBufIn
+			if (compressed) {
+				Huffman_Uncompress(audioInCompressed, audioIn, audio_compressed_size, audio_as_char);
+			}
 			memcpy(iBigBufIn, audioIn, audio_as_char);
 
 			// increment number of unread messages
