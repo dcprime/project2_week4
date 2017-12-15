@@ -23,8 +23,8 @@ extern long lBigBufSize;	// total number of samples in buffer
 const int audio_as_char = SAMPLES_SEC * RECORD_TIME * (sizeof(short) / sizeof(char));
 unsigned char audio_out[audio_as_char];
 
-const int audio_compressed_size = audio_as_char + HUFFEXTRA;
-unsigned char audio_compressed[audio_compressed_size];
+const int huff_compressed_size = audio_as_char + HUFFEXTRA;
+unsigned char audio_compressed[huff_compressed_size];
 
 int save_and_send(short* iBigBuf, long lBigBufSize, bool compression) {
 	char send;
@@ -46,6 +46,7 @@ int save_and_send(short* iBigBuf, long lBigBufSize, bool compression) {
 
 		if (compression) {
 			printf("\nCompressing audio message...\n");
+			// save return value from Huffman_Compress and send to ouputToPort
 			Huffman_Compress(audio_out, audio_compressed, audio_as_char);
 		}
 		printf("\nSending audio recording to receiver...\n");
@@ -87,13 +88,13 @@ void StartListeningMode(int* unlistenedAudio, int* totalAudio, bool compressed) 
 	int run = TRUE;
 	int success = 0;
 	unsigned char audioIn[audio_as_char];
-	unsigned char audioInCompressed[audio_compressed_size];
+	unsigned char audioInCompressed[huff_compressed_size];
 	short dot_counter = 0;
 	unsigned long timeout = 0;
 
 	while (run == TRUE) {
 		if (compressed) {
-			success = inputFromPort(audioInCompressed, audio_compressed_size);	// Receive compressed audio from port
+			success = inputFromPort(audioInCompressed, huff_compressed_size);	// Receive compressed audio from port
 		}
 		else {
 			success = inputFromPort(audioIn, audio_as_char);	// Receive audio from port
@@ -101,6 +102,7 @@ void StartListeningMode(int* unlistenedAudio, int* totalAudio, bool compressed) 
 		if (success == 1) {
 			// copy audio to iBigBufIn
 			if (compressed) {
+				// get incoming file size from number of bytes read in inputFromPort
 				Huffman_Uncompress(audioInCompressed, audioIn, audio_compressed_size, audio_as_char);
 			}
 			memcpy(iBigBufIn, audioIn, audio_as_char);
