@@ -11,6 +11,7 @@ Nov 24, 2017 - created cpp and header files to run audio operations from previou
 #include "sound.h"
 #include "audio.h"
 #include "RS232Comm.h"
+#include "huffman.h"
 
 char replay;
 char c;                                                 // used to flush extra input
@@ -22,7 +23,7 @@ extern long lBigBufSize;	// total number of samples in buffer
 const int audio_as_char = SAMPLES_SEC * RECORD_TIME * (sizeof(short) / sizeof(char));
 char audio_out[audio_as_char];
 
-int save_and_send(short* iBigBuf, long lBigBufSize) {
+int save_and_send(short* iBigBuf, long lBigBufSize, bool compression) {
 	char send;
 	printf("\nWould you like to send your audio recording? (y/n): ");
 	scanf_s("%c", &send, 1);
@@ -38,7 +39,12 @@ int save_and_send(short* iBigBuf, long lBigBufSize) {
 		fwrite(iBigBuf, sizeof(short), lBigBufSize, f);
 		fclose(f);*/
 
-		printf("\nSending audio recording to receiver ...\n");
+		if (compression) {
+			printf("\nCompressing audio message...\n");
+
+		}
+
+		printf("\nSending audio recording to receiver...\n");
 		memcpy(audio_out, iBigBuf, audio_as_char);
 		outputToPort(audio_out, audio_as_char);
 		Sleep(1000); // play with this number to see how short (or eliminate?)

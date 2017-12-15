@@ -7,7 +7,7 @@
 /******************* function prototypes **********************/
 
 // save audio file and send to receiver
-int save_and_send(short* iBigBuf, long lBigBufSize);
+int save_and_send(short* iBigBuf, long lBigBufSize, bool compression);
 
 // play received audio file
 int play_audio_file(int totalAudio);

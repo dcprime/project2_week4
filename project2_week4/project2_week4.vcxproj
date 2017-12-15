@@ -112,14 +112,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="huffman.c" />
     <ClCompile Include="nodes.cpp" />
-    <ClCompile Include="project2_week2_main.cpp" />
+    <ClCompile Include="project2_week4_main.cpp" />
     <ClCompile Include="queues.cpp" />
     <ClCompile Include="RS232Comm.cpp" />
     <ClCompile Include="sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
+    <ClInclude Include="huffman.h" />
     <ClInclude Include="nodes.h" />
     <ClInclude Include="queues.h" />
     <ClInclude Include="RS232Comm.h" />

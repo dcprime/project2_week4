@@ -28,6 +28,7 @@ void main(int argc, char *argv[]) {
 	int totalAudio = 0;
     char choice[STRSIZE];
     char msg_text[MSGSIZE];
+	bool compression = false;
 
     // initialize the message queue
     InitQueue();
@@ -41,6 +42,12 @@ void main(int argc, char *argv[]) {
         printf("[R]ecord and Send Audio Message\n");
         printf("[P]lay Audio Message");
 		printf("- %d audio messages in queue (%d unheard)\n", totalAudio, unlistenedAudio);
+		printf("[T]oggle compression on/off - compression currently ");
+		if (compression == false) {
+			printf("OFF\n");
+		}
+		else
+			printf("ON\n");
         printf("[W]ait for Text Message\n");
         printf("[S]end Text Message\n");
         printf("[C]heck Text Messages ");
@@ -59,12 +66,15 @@ void main(int argc, char *argv[]) {
             InitializeRecording();
             RecordBuffer(iBigBuf, lBigBufSize);
             CloseRecording();
-            save_and_send(iBigBuf, lBigBufSize);
+            save_and_send(iBigBuf, lBigBufSize, compression);
             break;
         case 'p':
             play_audio_file(totalAudio);
 			unlistenedAudio = 0;
             break;
+		case 't':
+			compression = !compression;
+			break;
         case 'w':
             printf("\nWaiting Mode active\n");
             StartWaitingMode(&unreadText, &totalText);
@@ -97,6 +107,7 @@ void main(int argc, char *argv[]) {
             printf("\nError: That option is not valid\n\n");
             break;
         }
+		// system("CLS");
     } // end while main menu
 
 }
