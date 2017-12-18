@@ -175,7 +175,7 @@ void AddMessToAudioQueue(short* audio_file) {
 	}
 
 	// add audio message content to node and add node to queue
-	memcpy(a_pNode->Data.recording, audio_file, SAMPLES_SEC * RECORD_TIME);
+	memcpy(a_pNode->Data.recording, audio_file, SAMPLES_SEC * RECORD_TIME * sizeof(short));
 	AddToAudioQueue(a_pNode);
 	printf("\n--- Audio Message added to queue ---\n");
 }
