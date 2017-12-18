@@ -1,4 +1,4 @@
-/*******************project2_week1_main.cpp ************************/
+/*******************project2_week4_main.cpp ************************/
 
 #include <stdio.h>
 #include <string.h>

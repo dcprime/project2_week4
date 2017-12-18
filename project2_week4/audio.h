@@ -4,6 +4,8 @@
 #define AUDIOLOOPDELAY 1
 #define AUDIOTIMEOUT 30
 
+#include "nodes.h"
+
 /******************* function prototypes **********************/
 
 // save audio file and send to receiver
