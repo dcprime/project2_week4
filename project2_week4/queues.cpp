@@ -13,10 +13,15 @@
 #include "nodes.h"
 #include "queues.h"
 #include "RS232Comm.h"
+#include "sound.h"
 
 
 
-static Node *pNode, *pHead, *pTail;
+static Node *pNode, *pHead, *pTail;				// text message queue pointers
+static A_Node *a_pNode, *a_pHead, *a_pTail;		// audio message queue pointers
+
+
+//************************* text message functions *************************// 
 
 void InitQueue(void)
 {
@@ -119,3 +124,59 @@ void StartWaitingMode(int* unreadMessages, int* totalMessages) {
 
     } // end while loop
 }
+
+//************************* audio message functions *************************//
+
+void InitAudioQueue(void)
+{
+	a_pHead = a_pTail = NULL;
+}
+
+// Returns non-zero if queue is empty. 
+int  IsAudioQueueEmpty(void)
+{
+	return (a_pHead == NULL);
+}
+
+void  AddToAudioQueue(A_Node *pn)
+{
+	if (a_pHead == NULL) {
+		a_pHead = pn; //make first item ‘head’
+	}
+	else {
+		a_pTail->pNext = pn;// make the last 
+	}           //input point to the new item 
+	pn->pNext = NULL;
+	a_pTail = pn; // make this last input
+} // item the ‘tail’   
+
+  // Return item at the head
+A_Node *DeQueueAudio(void)
+{
+	A_Node *pTemp;
+	if (a_pHead == NULL) return(NULL);
+	pTemp = a_pHead;
+	a_pHead = a_pHead->pNext; // make next item new ‘head’
+	return(pTemp);	  // return old ‘head’ 	
+}
+
+void AddMessToAudioQueue(short* audio_file) {
+	// create node to hold message content
+	if (IsQueueEmpty()) {
+		a_pNode = (a_link)malloc(sizeof(A_Node)); 	        // Make first Node
+		a_pHead = a_pNode;				                    // save its location
+		a_pTail = a_pNode;
+		a_pNode->Data.sequence = 1;							// set sequence number of first node
+	}
+	else {
+		a_pNode->pNext = (a_link)malloc(sizeof(A_Node));			// Make Node i
+		a_pNode->pNext->Data.sequence = a_pNode->Data.sequence + 1;	// Set sequence number of new node
+		a_pNode = a_pNode->pNext;									// Get pointer to Node i
+	}
+
+	// add message content to node and add node to queue
+	memcpy(a_pNode->Data.recording, audio_file, SAMPLES_SEC * RECORD_TIME);
+	AddToAudioQueue(a_pNode);
+	printf("\n--- Audio Message added to queue ---\n");
+}
+

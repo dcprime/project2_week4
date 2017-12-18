@@ -32,3 +32,18 @@ void PrintMessages(void);
 
 // begin loop to receive messages from transmitting terminal
 void StartWaitingMode(int* unreadMessages, int* totalMessages);
+
+// initialize the Audio queue
+void InitAudioQueue(void);
+
+// check if queue Audio is empty
+int  IsAudioQueueEmpty(void);
+
+// add Audio Node to queue
+void  AddToAudioQueue(A_Node *);
+
+// remove 1st Audio Node from queue and return pointer to it
+A_Node *DeQueueAudio(void);
+
+// add a message to an Audio node and add the Audio node to the queue
+void AddMessToAudioQueue(short* audio_file);

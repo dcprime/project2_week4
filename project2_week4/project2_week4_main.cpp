@@ -69,8 +69,14 @@ void main(int argc, char *argv[]) {
             save_and_send(iBigBuf, lBigBufSize, compression);
             break;
         case 'p':
-            play_audio_file(totalAudio);
-			unlistenedAudio = 0;
+			if (IsAudioQueueEmpty()) {
+				printf("\n--- Audio queue is empty ---\n");
+				break;
+			}
+			else {
+				play_audio_file(totalAudio);
+				unlistenedAudio = 0;
+			}
             break;
 		case 't':
 			compression = !compression;

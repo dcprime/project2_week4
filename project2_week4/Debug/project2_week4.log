@@ -1,6 +1,7 @@
 ﻿  project2_week4_main.cpp
   audio.cpp
+  RS232Comm.cpp
   Generating Code...
-c:\project 2 code\project2_week4\project2_week4\audio.cpp(63): warning C4715: 'save_and_send': not all control paths return a value
+c:\project 2 code\project2_week4\project2_week4\audio.cpp(66): warning C4715: 'save_and_send': not all control paths return a value
   project2_week4.vcxproj -> C:\Project 2 Code\project2_week4\Debug\project2_week4.exe
   project2_week4.vcxproj -> C:\Project 2 Code\project2_week4\Debug\project2_week4.pdb (Partial PDB)

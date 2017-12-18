@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include "nodes.h"
 
+// ********* text message functions ********* //
+
 // Execute a function on each node in order
 void traverse(link h, void(*visit)(link)) {
     if (h == NULL) return;
@@ -30,4 +32,25 @@ void traverseR(link h, void(*visit)(link)) {
 // Print the message content of a node
 void visit(link print_node) {
     printf("%s\n", print_node->Data.text);
+}
+
+// ********* audio message functions ********* //
+
+// Execute a function on each audio node in order
+void a_traverse(a_link h, void(*a_visit)(a_link)) {
+	if (h == NULL) return;
+	(*a_visit)(h);  // calls ‘visit’ before recursive call
+	a_traverse(h->pNext, a_visit);
+}
+
+// Execute a function on each node in reverse
+void a_traverseR(a_link h, void(*visit)(a_link)) {
+	if (h == NULL) return;
+	a_traverseR(h->pNext, a_visit);
+	(*visit)(h);
+}
+
+// Print the message content of a node
+void a_visit(a_link audio_node) {
+	printf("%s\n", audio_node->Data.recording);
 }
