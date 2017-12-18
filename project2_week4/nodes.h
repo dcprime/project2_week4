@@ -57,4 +57,4 @@ void a_traverse(a_link h, void(*a_visit)(a_link));
 
 void a_traverseR(a_link h, void(*a_visit)(a_link));
 
-void a_visit(a_link print_node);
+void a_visit(a_link audio_node);
