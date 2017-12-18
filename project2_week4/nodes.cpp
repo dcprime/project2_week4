@@ -12,6 +12,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include "nodes.h"
+#include "audio.h"
 
 // ********* text message functions ********* //
 
@@ -50,7 +51,8 @@ void a_traverseR(a_link h, void(*visit)(a_link)) {
 	(*visit)(h);
 }
 
-// Print the message content of a node
+// Play the audio message in the node
 void a_visit(a_link audio_node) {
-	printf("%s\n", audio_node->Data.recording);
+	printf("\nPlaying audio message %d\n", audio_node->Data.sequence);
+	play_audio_file(audio_node);
 }

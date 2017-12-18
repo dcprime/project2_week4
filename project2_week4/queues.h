@@ -47,3 +47,5 @@ A_Node *DeQueueAudio(void);
 
 // add a message to an Audio node and add the Audio node to the queue
 void AddMessToAudioQueue(short* audio_file);
+
+void PlayMessages(void);

@@ -28,10 +28,11 @@ void main(int argc, char *argv[]) {
 	int totalAudio = 0;
     char choice[STRSIZE];
     char msg_text[MSGSIZE];
-	bool compression = false;
+	bool compression = true;
 
     // initialize the message queue
     InitQueue();
+	InitAudioQueue();
 	initPort();
 
     while (run == TRUE) {
@@ -74,7 +75,7 @@ void main(int argc, char *argv[]) {
 				break;
 			}
 			else {
-				play_audio_file(totalAudio);
+				PlayMessages();
 				unlistenedAudio = 0;
 			}
             break;

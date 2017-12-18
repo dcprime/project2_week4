@@ -10,6 +10,6 @@
 int save_and_send(short* iBigBuf, long lBigBufSize, bool compression);
 
 // play received audio file
-int play_audio_file(int totalAudio);
+int play_audio_file(a_link audio_message);
 
 void StartListeningMode(int* unlistenedAudio, int* totalAudio, bool compressed);

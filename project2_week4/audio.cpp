@@ -12,6 +12,7 @@ Nov 24, 2017 - created cpp and header files to run audio operations from previou
 #include "audio.h"
 #include "RS232Comm.h"
 #include "huffman.h"
+#include "nodes.h"
 
 char replay;
 char c;                                                 // used to flush extra input
@@ -67,7 +68,7 @@ int save_and_send(short* iBigBuf, long lBigBufSize, bool compression) {
 
 
 
-int play_audio_file(int totalAudio) {
+int play_audio_file(a_link audio_message) {
 
 	/* code for opening audio from external file
 	fopen_s(&f, filename, "rb");
@@ -79,8 +80,7 @@ int play_audio_file(int totalAudio) {
 	fread(iBigBufNew, sizeof(short), lBigBufSize, f);				// Record to new buffer iBigBufNew
 	fclose(f); */
 	InitializePlayback();
-	printf("\nPlaying recording from received file...\n");
-	PlayBuffer(iBigBufIn, lBigBufSize);
+	PlayBuffer(audio_message->Data.recording, lBigBufSize);
 	ClosePlayback();
 	return 1;
 }
