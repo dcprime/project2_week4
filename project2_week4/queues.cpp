@@ -162,7 +162,7 @@ A_Node *DeQueueAudio(void)
 
 void AddMessToAudioQueue(short* audio_file) {
 	// create node to hold audio message content
-	if (IsQueueEmpty()) {
+	if (IsAudioQueueEmpty()) {
 		a_pNode = (a_link)malloc(sizeof(A_Node)); 	        // Make first Node
 		a_pHead = a_pNode;				                    // save its location
 		a_pTail = a_pNode;
