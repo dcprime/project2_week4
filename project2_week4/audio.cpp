@@ -13,6 +13,7 @@ Nov 24, 2017 - created cpp and header files to run audio operations from previou
 #include "RS232Comm.h"
 #include "huffman.h"
 #include "nodes.h"
+#include "queues.h"
 
 char replay;
 char c;                                                 // used to flush extra input
@@ -107,6 +108,8 @@ void StartListeningMode(int* unlistenedAudio, int* totalAudio, bool compressed) 
 				Huffman_Uncompress(audioInCompressed, audioIn, audio_comp_in_size, audio_as_char);
 			}
 			memcpy(iBigBufIn, audioIn, audio_as_char);
+
+			AddMessToAudioQueue(iBigBufIn);
 
 			// increment number of unread messages
 			(*unlistenedAudio)++;
